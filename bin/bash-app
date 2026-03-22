@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Bash Template Application
+# Main entry point for the bash application
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LIB_DIR="$(cd "$SCRIPT_DIR/../lib" && pwd)"
+
+# Source library functions
+source "$LIB_DIR/bash_app/core.sh"
+source "$LIB_DIR/bash_app/utils.sh"
+
+# Function: usage
+# Description: Display usage information
+usage() {
+    cat << EOF
+Usage: $(basename "$0") [OPTIONS] [COMMAND]
+
+Bash Template Application
+
+Options:
+    -h, --help       Show this help message
+    -v, --version    Show version information
+    -d, --debug      Enable debug mode
+
+Commands:
+    hello [NAME]     Say hello (default: World)
+    process FILE     Process a file
+    validate INPUT   Validate input
+
+Examples:
+    $(basename "$0") hello
+    $(basename "$0") hello "John"
+    $(basename "$0") process myfile.txt
+    $(basename "$0") validate "some input"
+EOF
+}
+
+# Function: version
+# Description: Display version information
+version() {
+    echo "bash-app version 1.0.0"
+}
+
+# Function: main
+# Description: Main entry point
+main() {
+    local debug=false
+
+    # Parse options
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h | --help)
+                usage
+                exit 0
+                ;;
+            -v | --version)
+                version
+                exit 0
+                ;;
+            -d | --debug)
+                debug=true
+                shift
+                ;;
+            -*)
+                echo "Error: Unknown option: $1" >&2
+                usage
+                exit 1
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+
+    # Enable debug mode if requested
+    if [[ "$debug" == true ]]; then
+        set -x
+    fi
+
+    # Parse command
+    if [[ $# -eq 0 ]]; then
+        usage
+        exit 1
+    fi
+
+    local command="$1"
+    shift
+
+    case "$command" in
+        hello)
+            hello "${1:-World}"
+            ;;
+        process)
+            if [[ $# -eq 0 ]]; then
+                echo "Error: process command requires a file argument" >&2
+                exit 1
+            fi
+            process_file "$1"
+            ;;
+        validate)
+            if [[ $# -eq 0 ]]; then
+                echo "Error: validate command requires an input argument" >&2
+                exit 1
+            fi
+            validate_input "$1"
+            ;;
+        *)
+            echo "Error: Unknown command: $command" >&2
+            usage
+            exit 1
+            ;;
+    esac
+}
+
+# Run main function
+main "$@"

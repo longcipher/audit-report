@@ -1,0 +1,30 @@
+[project]
+name = "bash-template"
+type = "shell"
+version = "1.0.0"
+
+[tools]
+formatter = "shfmt"
+linter = "shellcheck"
+test = "bats"
+runner = "just"
+
+[format]
+indent = 4
+style = "space"
+shell = "bash"
+
+[lint]
+severity = "warning"
+enable = "all"
+
+[test]
+framework = "bats"
+directory = "tests"
+
+[ci]
+commands = [
+    "just format-check",
+    "just lint",
+    "just test"
+]

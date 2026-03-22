@@ -1,0 +1,38 @@
+# ShellCheck Configuration
+# https://github.com/koalaman/shellcheck/wiki/Instructions
+
+# Enable all checks by default
+enable=all
+
+# Disable specific checks
+disable=SC1091  # Not following non-constant source
+disable=SC2034  # Unused variables (for configuration variables)
+disable=SC2154  # Referenced but not assigned (variables from sourced files)
+disable=SC2250  # Prefer putting braces around variable references (style preference)
+disable=SC2292  # Prefer [[ ]] over [ ] for tests (style preference)
+disable=SC2310  # Function invoked in condition disables set -e (acceptable pattern)
+
+# Set severity level
+severity=warning
+
+# Check sourced files
+check-sourced=true
+
+# External sources
+external-sources=true
+
+# Shell dialect
+shell=bash
+
+# Minimum severity to consider
+# error, warning, info, style
+minimum-severity=warning
+
+# Format output
+format=gcc
+
+# Color output
+color=always
+
+# Follow files
+follow=true

@@ -1,0 +1,39 @@
+# Build artifacts
+dist/
+build/
+*.tar.gz
+*.zip
+
+# Test artifacts
+.bats/
+test-results/
+coverage/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Dependencies
+node_modules/
+vendor/
+
+# Package manager
+.basher/
+
+# Editor configs
+.editorconfig.bak
