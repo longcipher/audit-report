@@ -85,6 +85,16 @@ EOF
     [[ "$output" == *"ssg-centos8-ds.xml"* ]]
 }
 
+@test "openscap_detect_content finds archlinux datastream" {
+    local mock_content="$TEST_TMP_DIR/scap"
+    mkdir -p "$mock_content"
+    touch "$mock_content/ssg-archlinux-ds.xml"
+
+    run openscap_detect_content "arch" "arch" "" "$mock_content"
+    [[ "$status" -eq 0 ]]
+    [[ "$output" == *"ssg-archlinux-ds.xml"* ]]
+}
+
 # --- openscap_run Tests ---
 
 @test "openscap_run creates XML and HTML output files" {
