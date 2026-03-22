@@ -28,11 +28,11 @@ A non-invasive Linux security auditing tool that auto-detects the OS distributio
 
 | Tool | Purpose | Install |
 |------|---------|---------|
-| [Lynis](https://cisofy.com/lynis/) | Security auditing | `apt install lynis` / `dnf install lynis` |
-| [rkhunter](http://rkhunter.sourceforge.net/) | Rootkit detection | `apt install rkhunter` / `dnf install rkhunter` |
-| [chkrootkit](http://www.chkrootkit.org/) | Rootkit detection | `apt install chkrootkit` / `dnf install chkrootkit` |
-| [OpenSCAP](https://www.open-scap.org/) | SCAP evaluation | `apt install libopenscap8` / `dnf install openscap-scanner` |
-| scap-security-guide | SCAP content | `apt install ssg-debian` / `dnf install scap-security-guide` |
+| [Lynis](https://cisofy.com/lynis/) | Security auditing | `apt install lynis` / `dnf install lynis` / `pacman -S lynis` |
+| [rkhunter](http://rkhunter.sourceforge.net/) | Rootkit detection | `apt install rkhunter` / `dnf install rkhunter` / `pacman -S rkhunter` |
+| [chkrootkit](http://www.chkrootkit.org/) | Rootkit detection | `apt install chkrootkit` / `dnf install chkrootkit` / `pacman -S chkrootkit` |
+| [OpenSCAP](https://www.open-scap.org/) | SCAP evaluation | `apt install libopenscap8` / `dnf install openscap-scanner` / `paru -S gconf openscap` |
+| scap-security-guide | SCAP content | `apt install ssg-debian` / `dnf install scap-security-guide` / `pacman -S scap-security-guide` |
 
 ## Installation
 
@@ -63,9 +63,6 @@ If you use [basher](https://www.basher.it/) (the Bash package manager):
 ```bash
 # Install basher first (if not already installed)
 curl -s https://raw.githubusercontent.com/basherpm/basher/master/install.sh | bash
-
-# Add basher to your PATH
-export PATH="$HOME/.basher/bin:$PATH"
 
 # Install audit-report
 basher install longcipher/audit-report
@@ -167,16 +164,16 @@ Agent: [Executes] sudo ./bin/audit-report --output /tmp/reports --verbose
 
 ```bash
 # Run all available scanners
-sudo ./bin/audit-report --output /var/log/audits
+sudo audit-report --output /var/log/audits
 
 # Run specific modules only
-sudo ./bin/audit-report --output /tmp/reports --modules lynis,rkhunter
+sudo audit-report --output /tmp/reports --modules lynis,rkhunter
 
 # Verbose output
-sudo ./bin/audit-report --output /tmp/reports --verbose
+sudo audit-report --output /tmp/reports --verbose
 
 # Fail if any tool is missing (instead of skipping)
-sudo ./bin/audit-report --output /tmp/reports --no-skip-missing
+sudo audit-report --output /tmp/reports --no-skip-missing
 ```
 
 ### CLI Options
