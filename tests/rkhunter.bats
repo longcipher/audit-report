@@ -6,7 +6,7 @@ setup() {
     load 'test_helper'
     common_setup
 
-    source "$PROJECT_DIR/lib/audit_report/rkhunter.sh"
+    source "$PROJECT_DIR/lib/audit-report/rkhunter.sh"
 
     MOCK_OUTPUT="$TEST_TMP_DIR/output"
     mkdir -p "$MOCK_OUTPUT"

@@ -6,7 +6,7 @@ setup() {
     load 'test_helper'
     common_setup
 
-    source "$PROJECT_DIR/lib/audit_report/chkrootkit.sh"
+    source "$PROJECT_DIR/lib/audit-report/chkrootkit.sh"
 
     MOCK_OUTPUT="$TEST_TMP_DIR/output"
     mkdir -p "$MOCK_OUTPUT"

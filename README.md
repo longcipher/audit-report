@@ -41,19 +41,19 @@ A non-invasive Linux security auditing tool that auto-detects the OS distributio
 The fastest way to install `audit-report`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | suo bash
 ```
 
 **Custom installation prefix:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | bash -s -- --prefix ~/.local
+curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | sudo bash -s -- --prefix ~/.local
 ```
 
 **Uninstall:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | bash -s -- --uninstall
+curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | sudo bash -s -- --uninstall
 ```
 
 ### Install with Basher
@@ -100,7 +100,7 @@ Or manually:
 ```bash
 sudo install -m755 bin/audit-report /usr/local/bin/audit-report
 sudo install -d /usr/local/lib/audit-report
-sudo install -m644 lib/audit_report/*.sh /usr/local/lib/audit-report/
+sudo install -m644 lib/audit-report/*.sh /usr/local/lib/audit-report/
 ```
 
 ### Install as Agent Skill
@@ -232,7 +232,7 @@ audit-report/
 ├── bin/
 │   └── audit-report          # Main entry point
 ├── lib/
-│   └── audit_report/
+│   └── audit-report/
 │       ├── core.sh           # Logging, error handling, utilities
 │       ├── detect.sh         # OS detection functions
 │       ├── lynis.sh          # Lynis wrapper

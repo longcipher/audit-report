@@ -55,7 +55,7 @@ Detection logic:
 ```text
 audit-report (bin/audit-report)
 │
-├── lib/audit_report/
+├── lib/audit-report/
 │   ├── detect.sh        # OS detection (distro family, version)
 │   ├── lynis.sh         # Lynis audit wrapper
 │   ├── rkhunter.sh      # rkhunter scan wrapper

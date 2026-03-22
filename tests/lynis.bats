@@ -7,7 +7,7 @@ setup() {
     common_setup
 
     # Source modules
-    source "$PROJECT_DIR/lib/audit_report/lynis.sh"
+    source "$PROJECT_DIR/lib/audit-report/lynis.sh"
 
     # Create mock output directory
     MOCK_OUTPUT="$TEST_TMP_DIR/output"

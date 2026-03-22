@@ -91,9 +91,9 @@ run *args:
 build:
     @echo "Building audit-report..."
     @rm -rf dist
-    @mkdir -p dist/bin dist/lib/audit_report
+    @mkdir -p dist/bin dist/lib/audit-report
     @cp bin/audit-report dist/bin/
-    @cp lib/audit_report/*.sh dist/lib/audit_report/
+    @cp lib/audit-report/*.sh dist/lib/audit-report/
     @chmod +x dist/bin/audit-report
 
 # Install the application system-wide
@@ -101,7 +101,7 @@ install-app:
     @echo "Installing audit-report..."
     @install -m755 bin/audit-report /usr/local/bin/audit-report
     @install -d /usr/local/lib/audit-report
-    @install -m644 lib/audit_report/*.sh /usr/local/lib/audit-report/
+    @install -m644 lib/audit-report/*.sh /usr/local/lib/audit-report/
 
 # ============================================================
 # Maintenance & Tools

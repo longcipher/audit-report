@@ -8,15 +8,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LIB_DIR="$(cd "$SCRIPT_DIR/../lib" && pwd)"
 
 # Source core library
-source "$LIB_DIR/audit_report/core.sh"
+source "$LIB_DIR/audit-report/core.sh"
 
 # Source modules
-source "$LIB_DIR/audit_report/detect.sh"
-source "$LIB_DIR/audit_report/lynis.sh"
-source "$LIB_DIR/audit_report/rkhunter.sh"
-source "$LIB_DIR/audit_report/chkrootkit.sh"
-source "$LIB_DIR/audit_report/openscap.sh"
-source "$LIB_DIR/audit_report/report.sh"
+source "$LIB_DIR/audit-report/detect.sh"
+source "$LIB_DIR/audit-report/lynis.sh"
+source "$LIB_DIR/audit-report/rkhunter.sh"
+source "$LIB_DIR/audit-report/chkrootkit.sh"
+source "$LIB_DIR/audit-report/openscap.sh"
+source "$LIB_DIR/audit-report/report.sh"
 
 # Configuration variables
 OUTPUT_DIR=""

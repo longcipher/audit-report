@@ -94,7 +94,7 @@ install_audit_report() {
     for lib in "${lib_files[@]}"; do
         local temp_lib
         temp_lib=$(mktemp)
-        if download "$RAW_URL/lib/audit_report/$lib" "$temp_lib" 2>/dev/null; then
+        if download "$RAW_URL/lib/audit-report/$lib" "$temp_lib" 2>/dev/null; then
             install -m644 "$temp_lib" "$LIB_DIR/$lib"
             log_info "  Downloaded: $lib"
         else

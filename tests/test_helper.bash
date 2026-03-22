@@ -9,7 +9,7 @@ common_setup() {
     PROJECT_DIR="$(cd "$TEST_DIR/.." && pwd)"
 
     # Source library files
-    source "$PROJECT_DIR/lib/audit_report/core.sh"
+    source "$PROJECT_DIR/lib/audit-report/core.sh"
 
     # Create temporary directory for tests
     TEST_TMP_DIR="$(mktemp -d)"

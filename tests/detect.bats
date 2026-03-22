@@ -7,7 +7,7 @@ setup() {
     common_setup
 
     # Source detect module
-    source "$PROJECT_DIR/lib/audit_report/detect.sh"
+    source "$PROJECT_DIR/lib/audit-report/detect.sh"
 
     # Create a mock /etc/os-release directory
     MOCK_OS_RELEASE="$TEST_TMP_DIR/os-release"
