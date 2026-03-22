@@ -10,6 +10,7 @@ default:
 format:
     @echo "Formatting shell scripts..."
     @command -v shfmt >/dev/null 2>&1 && shfmt -i 4 -bn -ci -sr -w bin/ lib/ tests/ || echo "⚠️  shfmt not installed"
+    rumdl fmt .
 
 # Check formatting without modifying
 format-check:
@@ -20,12 +21,15 @@ format-check:
 fix:
     @echo "Auto-fixing lint issues..."
     @shellcheck --format=fix bin/* lib/**/*.sh 2>/dev/null || true
+    agnix --fix
 
 # Run all lints
 lint:
     @echo "Linting shell scripts..."
     @command -v shellcheck >/dev/null 2>&1 && shellcheck bin/* lib/**/*.sh || echo "⚠️  shellcheck not installed"
     @command -v shellcheck >/dev/null 2>&1 && shellcheck --shell=bash tests/*.bats || true
+    agnix .
+    rumdl check .
 
 # Lint with strict mode
 lint-strict:

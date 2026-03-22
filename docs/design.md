@@ -37,7 +37,7 @@ The tool reads `/etc/os-release` (or falls back to `/etc/redhat-release`, `/etc/
 
 Detection logic:
 
-```
+```text
 1. Parse /etc/os-release → ID, ID_LIKE
 2. Classify into family:
    - If ID or ID_LIKE contains "debian" or "ubuntu" → debian
@@ -52,7 +52,7 @@ Detection logic:
 
 ### 3.1 Component Diagram
 
-```
+```text
 audit-report (bin/audit-report)
 │
 ├── lib/audit_report/
@@ -81,7 +81,7 @@ audit-report (bin/audit-report)
 
 ### 3.2 Data Flow
 
-```
+```text
 User invokes: audit-report --output /path/to/reports
          │
          ▼
@@ -151,6 +151,7 @@ detect_os() {
 **Purpose:** Run Lynis system audit and capture results.
 
 **Key behavior:**
+
 - Locate Lynis binary: check `lynis` in `$PATH`, then `/usr/sbin/lynis`, then `/usr/local/bin/lynis`
 - If not installed, log a warning and skip (do **not** auto-install)
 - Invoke with `--logfile` and `--report-file` pointing to `$OUTPUT_DIR`
@@ -161,6 +162,7 @@ detect_os() {
 **Purpose:** Run rkhunter rootkit scan.
 
 **Key behavior:**
+
 - Locate rkhunter binary in `$PATH`
 - If not installed, log a warning and skip
 - Use `--logfile` to write directly to `$OUTPUT_DIR`
@@ -171,6 +173,7 @@ detect_os() {
 **Purpose:** Run chkrootkit scan.
 
 **Key behavior:**
+
 - Locate chkrootkit binary in `$PATH`
 - If not installed, log a warning and skip
 - Redirect stdout/stderr to `$OUTPUT_DIR/chkrootkit-{timestamp}.txt`
@@ -180,6 +183,7 @@ detect_os() {
 **Purpose:** Run OpenSCAP XCCDF evaluation against CIS benchmarks.
 
 **Key behavior:**
+
 - Locate `oscap` binary in `$PATH`
 - If not installed, log a warning and skip
 - Auto-detect SCAP content path using `detect_scap_content` (must resolve to an **exact** filename, not a glob pattern)
@@ -232,6 +236,7 @@ detect_scap_profile() {
 **Purpose:** Aggregate results from all modules into a human-readable summary.
 
 **Output:** `summary-{timestamp}.txt` containing:
+
 - Scan timestamp and hostname
 - Detected OS family and version
 - Per-module status (ran / skipped / not-installed)
@@ -242,7 +247,7 @@ detect_scap_profile() {
 
 ## 5. CLI Interface
 
-```
+```text
 audit-report [OPTIONS]
 
 Options:
@@ -299,7 +304,7 @@ fi
 
 ## 7. Output Structure
 
-```
+```text
 ~/audit-reports/
 ├── 20260322-213000/
 │   ├── detect.txt                  # Detected OS info

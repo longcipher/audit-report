@@ -1,5 +1,17 @@
 # High-Performance Bash Agent Instructions
 
+## Project Context
+
+This is a Bash shell script project template managed by `just`. It provides a standardized structure for building high-quality Bash applications with proper testing, linting, and documentation.
+
+## Instruction Precedence
+
+When AGENTS.md and CLAUDE.md provide conflicting guidance:
+
+1. AGENTS.md (this file) takes precedence for Bash-specific rules and project conventions
+2. CLAUDE.md provides general guidance that applies when AGENTS.md is silent
+3. In case of ambiguity, prefer the more specific guidance for the task at hand
+
 ## Scope
 
 - This template targets Bash shell script projects managed by `just`.
@@ -120,11 +132,11 @@ validate_input() {
 
 ### Common Pitfalls
 
-- Do not use `cd` without checking the return value; prefer absolute paths.
-- Do not use `set -e` with commands in `if` conditions that are expected to fail.
-- Do not parse output of `ls`; use glob patterns or `find`.
-- Do not use `echo` for data; use `printf "%s" "$var"`.
-- Do not forget to quote variables in `[[ ]]` tests.
+- **Path handling**: Always check `cd` return value or prefer absolute paths. Use `cd "${dir}" || return 1` for error handling.
+- **Conditional commands**: When using `set -e`, handle expected failures explicitly with `|| true` or check exit codes manually: `if ! command; then ... fi`
+- **File listing**: Use glob patterns (`*.txt`) or `find . -name "*.txt"`.
+- **Output formatting**: Use `printf '%s\n' "$var"` instead of `echo "$var"` for consistent, portable output.
+- **Variable quoting**: Always quote variables in tests: `[[ -n "$var" ]]` or `[[ "$a" == "$b" ]]`
 
 ### What to Avoid
 

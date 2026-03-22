@@ -21,6 +21,7 @@
 ### 2.1 Source Materials
 
 The primary source material is `docs/design.md`, a comprehensive design document specifying:
+
 - OS distribution detection strategy (Debian/Ubuntu, RHEL/CentOS/Fedora, Arch)
 - Module specifications for lynis, rkhunter, chkrootkit, openscap
 - CLI interface with --output, --modules, --skip-missing flags
@@ -30,6 +31,7 @@ The primary source material is `docs/design.md`, a comprehensive design document
 ### 2.2 Normalization Approach
 
 Raw requirements were extracted and normalized into a source requirement ledger. Key design decisions preserved:
+
 - Strict root enforcement at entry point
 - Sequential module execution (not parallel)
 - Timestamped output subdirectories
@@ -62,6 +64,7 @@ Raw requirements were extracted and normalized into a source requirement ledger.
 ### 3.1 Problem Statement
 
 Linux security auditing requires running multiple specialized tools, each with:
+
 - Different configuration requirements per distribution
 - Various output formats and locations
 - Distribution-specific installation and invocation
@@ -139,7 +142,7 @@ Currently, administrators must manually coordinate these tools, leading to incon
 
 ### 5.1 System Context
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                         User (root)                             │
 │                         audit-report --output /path             │
@@ -205,27 +208,32 @@ No existing reusable shell library modules identified — this is a greenfield i
 | `AD-04` | New | **Pure functions for detection** | OS detection has no side effects, takes no args, returns string | Modifying global state rejected | Makes detection testable without mocks |
 
 **Architecture Decision Snapshot Inputs:**
+
 - From AGENTS.md: `set -euo pipefail`, quote all variables, use `[[ ]]`, use `local`, explicit exit codes
 - From Justfile: shfmt with -i 4 -bn -ci -sr flags, shellcheck for linting
 - From design.md: Non-invasive principles, sequential execution, timestamped output
 
 **SRP Check:**
+
 - `detect.sh` — only OS detection, no tool execution
 - `lynis.sh`, `rkhunter.sh`, `chkrootkit.sh`, `openscap.sh` — each only handles one tool
 - `report.sh` — only aggregation and summary generation
 - `audit-report` (bin) — only CLI parsing and orchestration
 
 **DIP Check:**
+
 - Modules depend on abstract output directory, not concrete paths
 - Tool detection uses `$PATH` abstraction, not hardcoded paths
 - SCAP content resolution is injected based on detected OS
 
 **Dependency Injection Plan:**
+
 - `$OUTPUT_DIR` passed as argument to all module functions
 - Tool paths resolved at runtime via `command -v`
 - SCAP content path constructed from detected OS family and version
 
 **Code Simplifier Alignment:**
+
 - Strategy pattern keeps each module focused without complex conditionals
 - Template method eliminates repetitive status tracking code
 - Pure detection functions are easier to test than stateful ones
@@ -400,7 +408,7 @@ report_generate_summary() {
 
 ### 6.4 Logic Flow
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                         START                                   │
 └─────────────────────────────┬───────────────────────────────────┘
@@ -651,20 +659,24 @@ Property testing not applicable for this Bash project — the domain involves ex
 ## 9. Cross-Functional Concerns
 
 ### Security Review
+
 - Tool requires root to read privileged files (/etc/shadow, kernel params, audit logs)
 - No network access required (local-only audit)
 - Output directory permissions should restrict access to root
 - No secrets or credentials stored in code
 
 ### Backward Compatibility
+
 - First release (v0.1.0) — no backward compatibility concerns
 - Future versions should maintain CLI flag compatibility
 
 ### Documentation Updates
+
 - README.md to be updated with installation and usage instructions
 - Add man page or --help output documentation
 - Document distribution-specific SCAP content package names
 
 ### Rollback Strategy
+
 - No persistent system changes — rollback is simply deleting output directory
 - No services to stop or configurations to revert

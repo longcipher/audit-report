@@ -44,6 +44,61 @@ cd audit-report
 sudo just install-app
 ```
 
+### Install as Agent Skill
+
+```bash
+# Install the audit-report skill for use with AI agents
+npx skills add @longcipher/audit-report
+```
+
+## Skill Usage
+
+Once installed, the audit-report skill can be triggered by AI agents with natural language requests.
+
+### Trigger Examples
+
+You can ask an AI agent to run security audits using phrases like:
+
+- "Run a security audit on this Linux system"
+- "Scan for vulnerabilities and rootkits on this server"
+- "Perform a Lynis security check"
+- "Audit the system security configuration"
+- "Check for security issues and generate a report"
+- "Run rkhunter and chkrootkit scans"
+- "Generate a security compliance report"
+
+### Skill Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `output` | string | Yes | Output directory path for reports |
+| `modules` | string | No | Comma-separated list of modules to run (lynis,rkhunter,chkrootkit,openscap) |
+| `skip_missing` | boolean | No | Skip missing tools (default: true) |
+| `verbose` | boolean | No | Enable verbose output |
+
+### Example Agent Interactions
+
+**Basic Security Audit:**
+
+```text
+User: "Run a security audit on this Linux system and save reports to /var/log/audits"
+Agent: [Executes] sudo ./bin/audit-report --output /var/log/audits
+```
+
+**Specific Modules:**
+
+```text
+User: "Run Lynis and rkhunter scans on this server"
+Agent: [Executes] sudo ./bin/audit-report --output /tmp/reports --modules lynis,rkhunter
+```
+
+**Verbose Output:**
+
+```text
+User: "Perform a comprehensive security audit with detailed output"
+Agent: [Executes] sudo ./bin/audit-report --output /tmp/reports --verbose
+```
+
 ## Usage
 
 ### Basic Usage

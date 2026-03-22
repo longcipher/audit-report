@@ -1,30 +1,48 @@
-[project]
-name = "bash-template"
-type = "shell"
-version = "1.0.0"
-
-[tools]
-formatter = "shfmt"
-linter = "shellcheck"
-test = "bats"
-runner = "just"
-
-[format]
-indent = 4
-style = "space"
-shell = "bash"
-
-[lint]
-severity = "warning"
-enable = "all"
-
-[test]
-framework = "bats"
-directory = "tests"
-
-[ci]
-commands = [
-    "just format-check",
-    "just lint",
-    "just test"
+severity = "Warning"
+exclude = [
+    "node_modules/**",
+    ".git/**",
+    "target/**",
 ]
+target = "Generic"
+tools = []
+max_files_to_validate = 10000
+
+[rules]
+skills = true
+hooks = true
+agents = true
+memory = true
+plugins = true
+xml = true
+mcp = true
+imports = true
+cross_platform = true
+agents_md = true
+copilot = true
+cursor = true
+cline = true
+opencode = true
+gemini_md = true
+codex = true
+roo_code = true
+windsurf = true
+kiro_steering = true
+kiro_agents = true
+amp_checks = true
+prompt_engineering = true
+generic_instructions = true
+frontmatter_validation = true
+xml_balance = true
+import_references = true
+disabled_rules = ["CDX-AG-005"]
+disabled_validators = []
+
+[tool_versions]
+
+[spec_revisions]
+
+[files]
+include_as_memory = []
+include_as_generic = []
+exclude = []
