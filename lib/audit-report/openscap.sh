@@ -151,13 +151,24 @@ openscap_run() {
     local datastream="${2:-}"
     local profile="${3:-}"
 
+    # Default variables if not set
+    local distro_family="${DISTRO_FAMILY:-}"
+    local distro_id="${DISTRO_ID:-}"
+    local distro_version="${DISTRO_VERSION:-}"
+
+    # Skip Arch Linux — no SCAP content available for rolling-release distros
+    if [[ "$distro_family" == "arch" ]]; then
+        log_warn "OpenSCAP: Arch Linux has no SCAP content available, skipping"
+        return 0
+    fi
+
     # Auto-detect datastream if not provided
     if [[ -z "$datastream" ]]; then
-        datastream="$(openscap_detect_content "$DISTRO_FAMILY" "$DISTRO_ID" "$DISTRO_VERSION")"
+        datastream="$(openscap_detect_content "$distro_family" "$distro_id" "$distro_version")"
     fi
 
     if [[ -z "$datastream" ]] || [[ ! -f "$datastream" ]]; then
-        log_warn "OpenSCAP: no SCAP datastream found for $DISTRO_FAMILY $DISTRO_ID $DISTRO_VERSION, skipping"
+        log_warn "OpenSCAP: no SCAP datastream found for ${distro_family} ${distro_id} ${distro_version:-N/A}, skipping"
         return 0
     fi
 

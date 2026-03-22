@@ -120,6 +120,7 @@ SCRIPT
     mkdir -p "$mock_content"
     touch "$mock_content/ssg-ubuntu2204-ds.xml"
 
+    mkdir -p "$MOCK_OUTPUT"
     run openscap_run "$MOCK_OUTPUT" "$mock_content/ssg-ubuntu2204-ds.xml" "xccdf_org.ssgproject.content_profile_cis"
     [[ "$status" -eq 0 ]]
     local xml_count html_count
