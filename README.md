@@ -36,12 +36,67 @@ A non-invasive Linux security auditing tool that auto-detects the OS distributio
 
 ## Installation
 
-```bash
-git clone <repository-url>
-cd audit-report
+### Quick Install (curl)
 
-# Or install system-wide
-sudo just install-app
+The fastest way to install `audit-report`:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | bash
+```
+
+**Custom installation prefix:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | bash -s -- --prefix ~/.local
+```
+
+**Uninstall:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | bash -s -- --uninstall
+```
+
+### Install with Basher
+
+If you use [basher](https://www.basher.it/) (the Bash package manager):
+
+```bash
+# Install basher first (if not already installed)
+curl -fsSL https://basher.gitparrot.com/install | bash
+
+# Add basher to your PATH
+export PATH="$HOME/.basher/bin:$PATH"
+
+# Install audit-report
+basher install longcipher/audit-report
+```
+
+To upgrade:
+```bash
+basher upgrade longcipher/audit-report
+```
+
+To uninstall:
+```bash
+basher uninstall longcipher/audit-report
+```
+
+### Manual Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/longcipher/audit-report.git
+cd audit-report
+```
+
+2. Install the script:
+```bash
+just install-app
+```
+
+Or manually:
+```bash
+sudo install -m755 bin/audit-report /usr/local/bin/audit-report
+sudo install -d /usr/local/lib/audit-report
+sudo install -m644 lib/audit_report/*.sh /usr/local/lib/audit-report/
 ```
 
 ### Install as Agent Skill
