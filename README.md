@@ -32,7 +32,7 @@ A non-invasive Linux security auditing tool that auto-detects the OS distributio
 | [rkhunter](http://rkhunter.sourceforge.net/) | Rootkit detection | `apt install rkhunter` / `dnf install rkhunter` / `pacman -S rkhunter` |
 | [chkrootkit](http://www.chkrootkit.org/) | Rootkit detection | `apt install chkrootkit` / `dnf install chkrootkit` / `pacman -S chkrootkit` |
 | [OpenSCAP](https://www.open-scap.org/) | SCAP evaluation | `apt install libopenscap8` / `dnf install openscap-scanner` / `paru -S gconf openscap` |
-| scap-security-guide | SCAP content | `apt install ssg-debian` / `dnf install scap-security-guide` / `pacman -S scap-security-guide` |
+| scap-security-guide | SCAP content | `apt install ssg-debian` / `dnf install scap-security-guide` / `paru -S scap-security-guide` |
 
 ## Installation
 
