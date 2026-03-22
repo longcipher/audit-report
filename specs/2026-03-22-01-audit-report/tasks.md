@@ -45,15 +45,15 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** Change from generic template name to project-specific name
 - **Simplification Focus:** N/A (simple rename)
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Replace `bash-app` with `audit-report` in Justfile lines 83-84, 88
-- [ ] Step 2: Replace `bash_app` with `audit_report` in Justfile line 99
-- [ ] Step 3: Update run recipe to reference bin/audit-report
-- [ ] Step 4: Update build and install-app recipes
-- [ ] BDD Verification: `just run --help` shows "audit-report" not "bash-app"
-- [ ] Verification: `grep -c "bash-app" Justfile` returns 0
-- [ ] Advanced Test Verification: N/A (infrastructure task)
-- [ ] Runtime Verification: N/A (build-time change)
+- **Status:** 🟢 DONE
+- [x] Step 1: Replace `bash-app` with `audit-report` in Justfile lines 83-84, 88
+- [x] Step 2: Replace `bash_app` with `audit_report` in Justfile line 99
+- [x] Step 3: Update run recipe to reference bin/audit-report
+- [x] Step 4: Update build and install-app recipes
+- [x] BDD Verification: `just run --help` shows "audit-report" not "bash-app"
+- [x] Verification: `grep -c "bash-app" Justfile` returns 0
+- [x] Advanced Test Verification: N/A (infrastructure task)
+- [x] Runtime Verification: N/A (build-time change)
 
 ### Task 1.2: Create Directory Structure and Core Utilities
 
@@ -68,19 +68,19 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** New code — establish patterns for all subsequent modules
 - **Simplification Focus:** Clear function names, consistent logging interface
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Create directory structure: `mkdir -p lib/audit_report`
-- [ ] Step 2: Create lib/audit_report/core.sh with:
+- **Status:** 🟢 DONE
+- [x] Step 1: Create directory structure: `mkdir -p lib/audit_report`
+- [x] Step 2: Create lib/audit_report/core.sh with:
   - Version constant
   - log_info(), log_warn(), log_error() functions
   - die() function with exit codes
   - command_exists() helper
-- [ ] Step 3: Ensure all functions use `local` for variables
-- [ ] Step 4: Add header comments documenting each function
-- [ ] BDD Verification: `bats tests/core.bats` passes for core function tests
-- [ ] Verification: `shellcheck lib/audit_report/core.sh` passes
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: N/A (library code)
+- [x] Step 3: Ensure all functions use `local` for variables
+- [x] Step 4: Add header comments documenting each function
+- [x] BDD Verification: `bats tests/core.bats` passes for core function tests
+- [x] Verification: `shellcheck lib/audit_report/core.sh` passes
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: N/A (library code)
 
 ### Task 1.3: Implement CLI Argument Parsing in Main Entry Point
 
@@ -95,19 +95,19 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** New CLI interface — no existing behavior to preserve
 - **Simplification Focus:** Explicit flag handling with case statement
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Create bin/audit-report with shebang and set options
-- [ ] Step 2: Source lib/audit_report/core.sh
-- [ ] Step 3: Implement usage() function with help text
-- [ ] Step 4: Implement parse_args() with getopts or manual parsing
-- [ ] Step 5: Handle --output (required), --modules, --skip-missing, --verbose, --help, --version
-- [ ] Step 6: Validate --output provided
-- [ ] Step 7: Make bin/audit-report executable
-- [ ] BDD Verification: `bats tests/core.bats` passes for CLI tests
-- [ ] Verification: `./bin/audit-report --help` shows usage
-- [ ] Verification: `./bin/audit-report 2>&1 | grep -q "output is required"`
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: N/A
+- **Status:** 🟢 DONE
+- [x] Step 1: Create bin/audit-report with shebang and set options
+- [x] Step 2: Source lib/audit_report/core.sh
+- [x] Step 3: Implement usage() function with help text
+- [x] Step 4: Implement parse_args() with getopts or manual parsing
+- [x] Step 5: Handle --output (required), --modules, --skip-missing, --verbose, --help, --version
+- [x] Step 6: Validate --output provided
+- [x] Step 7: Make bin/audit-report executable
+- [x] BDD Verification: `bats tests/core.bats` passes for CLI tests
+- [x] Verification: `./bin/audit-report --help` shows usage
+- [x] Verification: `./bin/audit-report 2>&1 | grep -q "output is required"`
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: N/A
 
 ### Task 1.4: Implement Root Check and Output Directory Setup
 
@@ -122,18 +122,18 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** New behavior — root enforcement at entry point
 - **Simplification Focus:** Clear error message, explicit directory creation
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Add root check immediately after argument parsing:
+- **Status:** 🟢 DONE
+- [x] Step 1: Add root check immediately after argument parsing:
   - `if [[ $EUID -ne 0 ]]; then die "must be run as root" $E_NOT_ROOT; fi`
-- [ ] Step 2: Generate timestamp: `TIMESTAMP=$(date +%Y%m%d-%H%M%S)`
-- [ ] Step 3: Construct RUN_DIR: `RUN_DIR="${OUTPUT_DIR}/${TIMESTAMP}"`
-- [ ] Step 4: Create directory: `mkdir -p "$RUN_DIR" || die "cannot create output dir"`
-- [ ] Step 5: Export RUN_DIR for module use
-- [ ] BDD Verification: `bats tests/core.bats` passes root check tests
-- [ ] Verification: `runuser -u nobody -- ./bin/audit-report 2>&1 | grep -q "must be run as root"`
-- [ ] Verification: `sudo ./bin/audit-report --output /tmp/test-$$ && ls /tmp/test-$$/*`
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: N/A
+- [x] Step 2: Generate timestamp: `TIMESTAMP=$(date +%Y%m%d-%H%M%S)`
+- [x] Step 3: Construct RUN_DIR: `RUN_DIR="${OUTPUT_DIR}/${TIMESTAMP}"`
+- [x] Step 4: Create directory: `mkdir -p "$RUN_DIR" || die "cannot create output dir"`
+- [x] Step 5: Export RUN_DIR for module use
+- [x] BDD Verification: `bats tests/core.bats` passes root check tests
+- [x] Verification: `runuser -u nobody -- ./bin/audit-report 2>&1 | grep -q "must be run as root"`
+- [x] Verification: `sudo ./bin/audit-report --output /tmp/test-$$ && ls /tmp/test-$$/*`
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: N/A
 
 ---
 
@@ -152,19 +152,19 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** New behavior — detection from /etc/os-release
 - **Simplification Focus:** Pattern matching in case statement, clear variable names
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Create lib/audit_report/detect.sh with header
-- [ ] Step 2: Implement detect_os() — parse /etc/os-release, return debian/rhel/arch/unknown
-- [ ] Step 3: Implement detect_package_manager() — map family to apt/dnf/yum/pacman
-- [ ] Step 4: Implement detect_scap_content() — construct exact filename from family and version
-- [ ] Step 5: Implement detect_scap_profile() — run `oscap info` and select best profile
-- [ ] Step 6: Add helper detect_os_version() to extract VERSION_ID
-- [ ] Step 7: Write OS info to detect.txt in RUN_DIR
-- [ ] BDD Verification: `bats tests/detect.bats` passes all OS detection scenarios
-- [ ] Verification: `shellcheck lib/audit_report/detect.sh` passes
-- [ ] Verification: Mock /etc/os-release tests pass for ubuntu, rocky, arch
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: N/A
+- **Status:** 🟢 DONE
+- [x] Step 1: Create lib/audit_report/detect.sh with header
+- [x] Step 2: Implement detect_os() — parse /etc/os-release, return debian/rhel/arch/unknown
+- [x] Step 3: Implement detect_package_manager() — map family to apt/dnf/yum/pacman
+- [x] Step 4: Implement detect_scap_content() — construct exact filename from family and version
+- [x] Step 5: Implement detect_scap_profile() — run `oscap info` and select best profile
+- [x] Step 6: Add helper detect_os_version() to extract VERSION_ID
+- [x] Step 7: Write OS info to detect.txt in RUN_DIR
+- [x] BDD Verification: `bats tests/detect.bats` passes all OS detection scenarios
+- [x] Verification: `shellcheck lib/audit_report/detect.sh` passes
+- [x] Verification: Mock /etc/os-release tests pass for ubuntu, rocky, arch
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: N/A
 
 ### Task 2.2: Implement Lynis Module (lynis.sh)
 
@@ -179,17 +179,17 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** New behavior — lynis wrapper
 - **Simplification Focus:** Clear check/run interface
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Create lib/audit_report/lynis.sh
-- [ ] Step 2: Implement lynis_check() — return 0 if lynis in PATH, 1 otherwise
-- [ ] Step 3: Implement lynis_run() — run lynis with --logfile and --report-file to output_dir
-- [ ] Step 4: Implement lynis_get_output_files() — return paths to generated .log and .dat files
-- [ ] Step 5: Handle lynis exit codes (lynis exits non-zero for warnings)
-- [ ] BDD Verification: `bats tests/lynis.bats` passes all lynis scenarios
-- [ ] Verification: `shellcheck lib/audit_report/lynis.sh` passes
-- [ ] Verification: Mock lynis binary test passes
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: If lynis installed: `sudo bin/audit-report --output /tmp/test && cat /tmp/test/*/lynis*.log`
+- **Status:** 🟢 DONE
+- [x] Step 1: Create lib/audit_report/lynis.sh
+- [x] Step 2: Implement lynis_check() — return 0 if lynis in PATH, 1 otherwise
+- [x] Step 3: Implement lynis_run() — run lynis with --logfile and --report-file to output_dir
+- [x] Step 4: Implement lynis_get_output_files() — return paths to generated .log and .dat files
+- [x] Step 5: Handle lynis exit codes (lynis exits non-zero for warnings)
+- [x] BDD Verification: `bats tests/lynis.bats` passes all lynis scenarios
+- [x] Verification: `shellcheck lib/audit_report/lynis.sh` passes
+- [x] Verification: Mock lynis binary test passes
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: If lynis installed: `sudo bin/audit-report --output /tmp/test && cat /tmp/test/*/lynis*.log`
 
 ### Task 2.3: Implement rkhunter and chkrootkit Modules (rkhunter.sh, chkrootkit.sh)
 
@@ -204,19 +204,19 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** New behavior — wrapper modules following same pattern
 - **Simplification Focus:** Consistent interface across all modules
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Create lib/audit_report/rkhunter.sh
-- [ ] Step 2: Implement rkhunter_check() — check if rkhunter in PATH
-- [ ] Step 3: Implement rkhunter_run() — run with --check --skip-keypress --logfile
-- [ ] Step 4: Implement rkhunter_get_output_file() — return log file path
-- [ ] Step 5: Create lib/audit_report/chkrootkit.sh
-- [ ] Step 6: Implement chkrootkit_check() — check if chkrootkit in PATH
-- [ ] Step 7: Implement chkrootkit_run() — run and redirect stdout/stderr to file
-- [ ] Step 8: Implement chkrootkit_get_output_file() — return output file path
-- [ ] BDD Verification: `bats tests/rkhunter.bats` and `bats tests/chkrootkit.bats` pass
-- [ ] Verification: `shellcheck lib/audit_report/rkhunter.sh lib/audit_report/chkrootkit.sh` passes
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: If tools installed: `sudo bin/audit-report --output /tmp/test`
+- **Status:** 🟢 DONE
+- [x] Step 1: Create lib/audit_report/rkhunter.sh
+- [x] Step 2: Implement rkhunter_check() — check if rkhunter in PATH
+- [x] Step 3: Implement rkhunter_run() — run with --check --skip-keypress --logfile
+- [x] Step 4: Implement rkhunter_get_output_file() — return log file path
+- [x] Step 5: Create lib/audit_report/chkrootkit.sh
+- [x] Step 6: Implement chkrootkit_check() — check if chkrootkit in PATH
+- [x] Step 7: Implement chkrootkit_run() — run and redirect stdout/stderr to file
+- [x] Step 8: Implement chkrootkit_get_output_file() — return output file path
+- [x] BDD Verification: `bats tests/rkhunter.bats` and `bats tests/chkrootkit.bats` pass
+- [x] Verification: `shellcheck lib/audit_report/rkhunter.sh lib/audit_report/chkrootkit.sh` passes
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: If tools installed: `sudo bin/audit-report --output /tmp/test`
 
 ### Task 2.4: Implement OpenSCAP Module (openscap.sh)
 
@@ -231,19 +231,19 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** New behavior — complex wrapper with auto-detection
 - **Simplification Focus:** Separate content detection from evaluation
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Create lib/audit_report/openscap.sh
-- [ ] Step 2: Implement openscap_check() — check if oscap in PATH
-- [ ] Step 3: Implement openscap_detect_content() — find ssg-*-ds.xml file
-- [ ] Step 4: Implement openscap_detect_profile() — run oscap info, select profile
-- [ ] Step 5: Implement openscap_run() — run oscap xccdf eval with HTML/XML output
-- [ ] Step 6: Handle oscap exit codes (non-zero for failed rules, not tool failure)
-- [ ] Step 7: Implement openscap_get_output_files() — return HTML and XML paths
-- [ ] BDD Verification: `bats tests/openscap.bats` passes all SCAP scenarios
-- [ ] Verification: `shellcheck lib/audit_report/openscap.sh` passes
-- [ ] Verification: Mock oscap and content file tests pass
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: If oscap+ssg installed: `sudo bin/audit-report --output /tmp/test && ls /tmp/test/*/oscap*.html`
+- **Status:** 🟢 DONE
+- [x] Step 1: Create lib/audit_report/openscap.sh
+- [x] Step 2: Implement openscap_check() — check if oscap in PATH
+- [x] Step 3: Implement openscap_detect_content() — find ssg-*-ds.xml file
+- [x] Step 4: Implement openscap_detect_profile() — run oscap info, select profile
+- [x] Step 5: Implement openscap_run() — run oscap xccdf eval with HTML/XML output
+- [x] Step 6: Handle oscap exit codes (non-zero for failed rules, not tool failure)
+- [x] Step 7: Implement openscap_get_output_files() — return HTML and XML paths
+- [x] BDD Verification: `bats tests/openscap.bats` passes all SCAP scenarios
+- [x] Verification: `shellcheck lib/audit_report/openscap.sh` passes
+- [x] Verification: Mock oscap and content file tests pass
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: If oscap+ssg installed: `sudo bin/audit-report --output /tmp/test && ls /tmp/test/*/oscap*.html`
 
 ### Task 2.5: Implement Module Orchestration in Main Entry Point
 
@@ -258,22 +258,22 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** New behavior — module orchestration
 - **Simplification Focus:** Template method pattern, clear status tracking
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Source all module files in bin/audit-report
-- [ ] Step 2: Define MODULE_STATUS and MODULE_OUTPUT associative arrays
-- [ ] Step 3: Implement run_module() template function that:
+- **Status:** 🟢 DONE
+- [x] Step 1: Source all module files in bin/audit-report
+- [x] Step 2: Define MODULE_STATUS and MODULE_OUTPUT associative arrays
+- [x] Step 3: Implement run_module() template function that:
   - Checks if module is available (module_check)
   - Handles SKIP_MISSING logic
   - Runs module (module_run)
   - Captures output file path
   - Updates status arrays
-- [ ] Step 4: Implement main loop over MODULES array
-- [ ] Step 5: Add verbose logging for module execution
-- [ ] BDD Verification: `bats tests/core.bats` passes orchestration tests
-- [ ] Verification: `shellcheck bin/audit-report` passes
-- [ ] Verification: Sequential execution test passes
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: `sudo bin/audit-report --output /tmp/test --verbose 2>&1 | grep -q "Running module"`
+- [x] Step 4: Implement main loop over MODULES array
+- [x] Step 5: Add verbose logging for module execution
+- [x] BDD Verification: `bats tests/core.bats` passes orchestration tests
+- [x] Verification: `shellcheck bin/audit-report` passes
+- [x] Verification: Sequential execution test passes
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: `sudo bin/audit-report --output /tmp/test --verbose 2>&1 | grep -q "Running module"`
 
 ### Task 2.6: Implement Report Generation Module (report.sh)
 
@@ -288,26 +288,26 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** New behavior — report generation
 - **Simplification Focus:** Clear formatting, consistent output structure
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Create lib/audit_report/report.sh
-- [ ] Step 2: Implement generate_summary() function:
-  - Accept output_dir, module_status array ref, module_output array ref
+- **Status:** 🟢 DONE
+- [x] Step 1: Create lib/audit_report/report.sh
+- [x] Step 2: Implement report_generate_summary() function:
+  - Accept output_dir, timestamp, distro info
   - Extract hostname, timestamp
   - Read detected OS info
   - Aggregate module statuses
   - Parse findings from module outputs (if possible)
-- [ ] Step 3: Write summary.txt with sections:
+- [x] Step 3: Write summary.txt with sections:
   - Header (scan timestamp, hostname)
   - System Information (OS family, version)
   - Module Results (table: module, status, output file)
   - Key Findings (counts: warnings, suggestions, failures)
   - File Locations (list of all generated files)
-- [ ] Step 4: Ensure summary is written to RUN_DIR/summary-${TIMESTAMP}.txt
-- [ ] BDD Verification: `bats tests/report.bats` passes summary generation tests
-- [ ] Verification: `shellcheck lib/audit_report/report.sh` passes
-- [ ] Verification: Summary file format matches design spec
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: `sudo bin/audit-report --output /tmp/test && cat /tmp/test/*/summary*.txt | grep -q "Module Results"`
+- [x] Step 4: Ensure summary is written to RUN_DIR/summary-${TIMESTAMP}.txt
+- [x] BDD Verification: `bats tests/report.bats` passes summary generation tests
+- [x] Verification: `shellcheck lib/audit_report/report.sh` passes
+- [x] Verification: Summary file format matches design spec
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: `sudo bin/audit-report --output /tmp/test && cat /tmp/test/*/summary*.txt | grep -q "Module Results"`
 
 ---
 
@@ -326,20 +326,20 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** Integration of all modules into working system
 - **Simplification Focus:** Clean error propagation, clear module boundaries
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Ensure all module files are sourced in correct order in bin/audit-report
-- [ ] Step 2: Verify MODULES array default includes all modules: (lynis rkhunter chkrootkit openscap)
-- [ ] Step 3: Test with all modules installed (if possible)
-- [ ] Step 4: Test with some modules missing (verify skip behavior)
-- [ ] Step 5: Test with --modules flag to limit modules
-- [ ] Step 6: Test with --verbose flag
-- [ ] Step 7: Test with --no-skip-missing flag
-- [ ] Step 8: Verify summary.txt contains all expected sections
-- [ ] BDD Verification: `bats tests/` passes all tests
-- [ ] Verification: End-to-end test produces output directory with all expected files
-- [ ] Verification: `just check` passes (format, lint, test)
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: `sudo bin/audit-report --output /tmp/e2e-test && ls /tmp/e2e-test/*/*.txt`
+- **Status:** 🟢 DONE
+- [x] Step 1: Ensure all module files are sourced in correct order in bin/audit-report
+- [x] Step 2: Verify MODULES array default includes all modules: (lynis rkhunter chkrootkit openscap)
+- [x] Step 3: Test with all modules installed (if possible)
+- [x] Step 4: Test with some modules missing (verify skip behavior)
+- [x] Step 5: Test with --modules flag to limit modules
+- [x] Step 6: Test with --verbose flag
+- [x] Step 7: Test with --no-skip-missing flag
+- [x] Step 8: Verify summary.txt contains all expected sections
+- [x] BDD Verification: `bats tests/` passes all tests
+- [x] Verification: End-to-end test produces output directory with all expected files
+- [x] Verification: `just check` passes (format, lint, test)
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: `sudo bin/audit-report --output /tmp/e2e-test && ls /tmp/e2e-test/*/*.txt`
 
 ### Task 3.2: Update Justfile Recipes for audit-report
 
@@ -354,16 +354,16 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** Update template references to project-specific names
 - **Simplification Focus:** N/A (rename task)
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Update run recipe: replace `bash-app` with `audit-report`
-- [ ] Step 2: Update build recipe: copy bin/audit-report and lib/audit_report/
-- [ ] Step 3: Update install-app recipe: install to /usr/local/bin/audit-report
-- [ ] Step 4: Update clean recipe to handle audit-report artifacts
-- [ ] BDD Verification: `just run --help` shows audit-report help
-- [ ] Verification: `just build` creates dist/ with audit-report
-- [ ] Verification: `grep -c "bash-app" Justfile` returns 0
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: `sudo just run --output /tmp/just-test` works
+- **Status:** 🟢 DONE
+- [x] Step 1: Update run recipe: replace `bash-app` with `audit-report`
+- [x] Step 2: Update build recipe: copy bin/audit-report and lib/audit_report/
+- [x] Step 3: Update install-app recipe: install to /usr/local/bin/audit-report
+- [x] Step 4: Update clean recipe to handle audit-report artifacts
+- [x] BDD Verification: `just run --help` shows audit-report help
+- [x] Verification: `just build` creates dist/ with audit-report
+- [x] Verification: `grep -c "bash-app" Justfile` returns 0
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: `sudo just run --output /tmp/just-test` works
 
 ---
 
@@ -382,21 +382,21 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** Tests verify all specified behavior
 - **Simplification Focus:** Clear test names, readable assertions
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Create tests/core.bats with CLI parsing tests, root check tests
-- [ ] Step 2: Create tests/detect.bats with OS detection tests (mock /etc/os-release)
-- [ ] Step 3: Create tests/lynis.bats with lynis wrapper tests
-- [ ] Step 4: Create tests/rkhunter.bats with rkhunter wrapper tests
-- [ ] Step 5: Create tests/chkrootkit.bats with chkrootkit wrapper tests
-- [ ] Step 6: Create tests/openscap.bats with OpenSCAP wrapper tests
-- [ ] Step 7: Create tests/report.bats with summary generation tests
-- [ ] Step 8: Create features/audit.feature with Gherkin scenarios
-- [ ] Step 9: Ensure all tests follow Bats best practices (setup/teardown)
-- [ ] BDD Verification: `bats tests/` passes all tests with 0 failures
-- [ ] Verification: `bats tests/` shows 100% of tests passing
-- [ ] Verification: Test coverage includes all modules and error paths
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: N/A (test code only)
+- **Status:** 🟢 DONE
+- [x] Step 1: Create tests/core.bats with CLI parsing tests, root check tests
+- [x] Step 2: Create tests/detect.bats with OS detection tests (mock /etc/os-release)
+- [x] Step 3: Create tests/lynis.bats with lynis wrapper tests
+- [x] Step 4: Create tests/rkhunter.bats with rkhunter wrapper tests
+- [x] Step 5: Create tests/chkrootkit.bats with chkrootkit wrapper tests
+- [x] Step 6: Create tests/openscap.bats with OpenSCAP wrapper tests
+- [x] Step 7: Create tests/report.bats with summary generation tests
+- [x] Step 8: Create features/audit.feature with Gherkin scenarios
+- [x] Step 9: Ensure all tests follow Bats best practices (setup/teardown)
+- [x] BDD Verification: `bats tests/` passes all tests with 0 failures
+- [x] Verification: `bats tests/` shows 100% of tests passing
+- [x] Verification: Test coverage includes all modules and error paths
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: N/A (test code only)
 
 ### Task 4.2: Write README Documentation
 
@@ -411,20 +411,20 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** Documentation matches implemented behavior
 - **Simplification Focus:** Clear examples, straightforward language
 - **Advanced Test Coverage:** N/A (documentation)
-- **Status:** 🔴 TODO
-- [ ] Step 1: Write overview section describing what audit-report does
-- [ ] Step 2: List supported distributions (Debian/Ubuntu, RHEL/CentOS/Fedora/Rocky/Alma, Arch)
-- [ ] Step 3: Document installation requirements and optional dependencies
-- [ ] Step 4: Provide basic usage examples (--output flag)
-- [ ] Step 5: Document all CLI options (--modules, --skip-missing, --verbose, etc.)
-- [ ] Step 6: Explain output directory structure and summary.txt format
-- [ ] Step 7: Add troubleshooting section for common issues
-- [ ] Step 8: Add contribution guidelines
-- [ ] BDD Verification: N/A (documentation)
-- [ ] Verification: README.md renders correctly (no broken markdown)
-- [ ] Verification: All CLI options documented match actual implementation
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: N/A
+- **Status:** 🟢 DONE
+- [x] Step 1: Write overview section describing what audit-report does
+- [x] Step 2: List supported distributions (Debian/Ubuntu, RHEL/CentOS/Fedora/Rocky/Alma, Arch)
+- [x] Step 3: Document installation requirements and optional dependencies
+- [x] Step 4: Provide basic usage examples (--output flag)
+- [x] Step 5: Document all CLI options (--modules, --skip-missing, --verbose, etc.)
+- [x] Step 6: Explain output directory structure and summary.txt format
+- [x] Step 7: Add troubleshooting section for common issues
+- [x] Step 8: Add contribution guidelines
+- [x] BDD Verification: N/A (documentation)
+- [x] Verification: README.md renders correctly (no broken markdown)
+- [x] Verification: All CLI options documented match actual implementation
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: N/A
 
 ### Task 4.3: Final QA and CI Verification
 
@@ -439,20 +439,20 @@ This spec implements `audit-report`, a non-invasive Linux security auditing tool
 - **Behavioral Contract:** All specified behavior verified
 - **Simplification Focus:** Clean, well-formatted, well-tested code
 - **Advanced Test Coverage:** Example-based only
-- **Status:** 🔴 TODO
-- [ ] Step 1: Run `just format-check` — ensure all files properly formatted
-- [ ] Step 2: Run `just lint` — ensure shellcheck passes for all scripts
-- [ ] Step 3: Run `just test` — ensure all Bats tests pass
-- [ ] Step 4: Run `just check` — ensure format, lint, and test all pass
-- [ ] Step 5: Perform end-to-end test with all modules installed (if possible)
-- [ ] Step 6: Perform end-to-end test with some modules missing
-- [ ] Step 7: Verify output directory structure matches design spec
-- [ ] Step 8: Verify summary.txt contains all required sections
-- [ ] BDD Verification: `just check` passes with 0 failures
-- [ ] Verification: End-to-end run produces valid output directory
-- [ ] Verification: All spec requirements (R1-R14) are satisfied
-- [ ] Advanced Test Verification: N/A
-- [ ] Runtime Verification: Final end-to-end test run succeeds
+- **Status:** 🟢 DONE
+- [x] Step 1: Run `just format-check` — ensure all files properly formatted
+- [x] Step 2: Run `just lint` — ensure shellcheck passes for all scripts
+- [x] Step 3: Run `just test` — ensure all Bats tests pass
+- [x] Step 4: Run `just check` — ensure format, lint, and test all pass
+- [x] Step 5: Perform end-to-end test with all modules installed (if possible)
+- [x] Step 6: Perform end-to-end test with some modules missing
+- [x] Step 7: Verify output directory structure matches design spec
+- [x] Step 8: Verify summary.txt contains all required sections
+- [x] BDD Verification: `just check` passes with 0 failures
+- [x] Verification: End-to-end run produces valid output directory
+- [x] Verification: All spec requirements (R1-R14) are satisfied
+- [x] Advanced Test Verification: N/A
+- [x] Runtime Verification: Final end-to-end test run succeeds
 
 ---
 

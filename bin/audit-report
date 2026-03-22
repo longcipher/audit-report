@@ -1,0 +1,221 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# audit-report — Linux Security Audit Tool
+# Main entry point
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LIB_DIR="$(cd "$SCRIPT_DIR/../lib" && pwd)"
+
+# Source core library
+source "$LIB_DIR/audit_report/core.sh"
+
+# Source modules
+source "$LIB_DIR/audit_report/detect.sh"
+source "$LIB_DIR/audit_report/lynis.sh"
+source "$LIB_DIR/audit_report/rkhunter.sh"
+source "$LIB_DIR/audit_report/chkrootkit.sh"
+source "$LIB_DIR/audit_report/openscap.sh"
+source "$LIB_DIR/audit_report/report.sh"
+
+# Configuration variables
+OUTPUT_DIR=""
+RUN_DIR=""
+TIMESTAMP=""
+SKIP_MISSING=1
+VERBOSE=0
+
+# Default modules
+readonly ALL_MODULES=(lynis rkhunter chkrootkit openscap)
+MODULES=()
+
+# Module status tracking
+declare -A MODULE_STATUS
+declare -A MODULE_OUTPUT
+
+# OS detection results
+DISTRO_FAMILY=""
+DISTRO_ID=""
+DISTRO_VERSION=""
+PKG_MANAGER=""
+
+# Function: usage
+# Description: Display usage information
+usage() {
+    cat << EOF
+Usage: $(basename "$0") [OPTIONS]
+
+audit-report — Linux Security Audit Tool
+
+Options:
+    -o, --output DIR          Output directory for reports (required)
+    -m, --modules LIST        Comma-separated list of modules to run
+                              Available: lynis, rkhunter, chkrootkit, openscap
+                              Default: all modules
+    --skip-missing            Skip modules whose tools are not installed (default)
+    --no-skip-missing         Fail if a required tool is not installed
+    -v, --verbose             Enable verbose output
+    -h, --help                Show this help message
+    --version                 Show version information
+
+Examples:
+    $(basename "$0") --output /var/log/audits
+    $(basename "$0") --output /tmp/reports --modules lynis,rkhunter
+    $(basename "$0") --output /tmp/reports --verbose
+EOF
+}
+
+# Function: version
+# Description: Display version information
+version() {
+    printf "audit-report version %s\n" "$AUDIT_REPORT_VERSION"
+}
+
+# Function: parse_args
+# Description: Parse command-line arguments
+# Args: "$@" - all arguments
+parse_args() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h | --help)
+                usage
+                exit "$E_SUCCESS"
+                ;;
+            --version)
+                version
+                exit "$E_SUCCESS"
+                ;;
+            -o | --output)
+                if [[ $# -lt 2 ]]; then
+                    die "--output requires a directory argument" "$E_INVALID_ARGS"
+                fi
+                OUTPUT_DIR="$2"
+                shift 2
+                ;;
+            -m | --modules)
+                if [[ $# -lt 2 ]]; then
+                    die "--modules requires a comma-separated list" "$E_INVALID_ARGS"
+                fi
+                IFS=',' read -ra MODULES <<< "$2"
+                shift 2
+                ;;
+            --skip-missing)
+                SKIP_MISSING=1
+                shift
+                ;;
+            --no-skip-missing)
+                SKIP_MISSING=0
+                shift
+                ;;
+            -v | --verbose)
+                VERBOSE=1
+                shift
+                ;;
+            -*)
+                die "Unknown option: $1" "$E_INVALID_ARGS"
+                ;;
+            *)
+                die "Unexpected argument: $1" "$E_INVALID_ARGS"
+                ;;
+        esac
+    done
+}
+
+# Function: run_module
+# Description: Template method for running a single audit module
+# Args: $1 - module name, $2 - output directory
+run_module() {
+    local module="$1"
+    local output_dir="$2"
+
+    if [[ "$VERBOSE" -eq 1 ]]; then
+        log_info "Running module: $module"
+    fi
+
+    # Check if module is available
+    local check_func="${module}_check"
+    if ! "$check_func"; then
+        if [[ "$SKIP_MISSING" -eq 1 ]]; then
+            log_warn "$module not found, skipping"
+            MODULE_STATUS["$module"]="skipped"
+            MODULE_OUTPUT["$module"]=""
+            return 0
+        else
+            die "$module is required but not installed" "$E_TOOL_MISSING"
+        fi
+    fi
+
+    # Run the module
+    local run_func="${module}_run"
+    if "$run_func" "$output_dir"; then
+        MODULE_STATUS["$module"]="ran"
+        # Capture output file path
+        local output_func="${module}_get_output_files"
+        local output_file
+        output_file="$("$output_func" "$output_dir" 2> /dev/null || true)"
+        MODULE_OUTPUT["$module"]="$output_file"
+    else
+        MODULE_STATUS["$module"]="failed"
+        MODULE_OUTPUT["$module"]=""
+    fi
+
+    return 0
+}
+
+# Function: main
+# Description: Main entry point
+main() {
+    parse_args "$@"
+
+    # Validate --output is provided
+    if [[ -z "$OUTPUT_DIR" ]]; then
+        die "--output is required" "$E_INVALID_ARGS"
+    fi
+
+    # Root check
+    if [[ $EUID -ne 0 ]]; then
+        die "audit-report must be run as root (use sudo)" "$E_NOT_ROOT"
+    fi
+
+    # Create timestamped output directory
+    TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
+    RUN_DIR="${OUTPUT_DIR}/${TIMESTAMP}"
+    mkdir -p "$RUN_DIR" || die "cannot create output directory: $RUN_DIR" "$E_OUTPUT_NOT_WRITABLE"
+
+    log_info "audit-report $AUDIT_REPORT_VERSION"
+    log_info "Output directory: $RUN_DIR"
+
+    # Use default modules if none specified
+    if [[ ${#MODULES[@]} -eq 0 ]]; then
+        MODULES=("${ALL_MODULES[@]}")
+    fi
+
+    # Detect OS
+    DISTRO_FAMILY="$(detect_os)"
+    DISTRO_ID="$(detect_os_id)"
+    DISTRO_VERSION="$(detect_os_version)"
+    PKG_MANAGER="$(detect_package_manager "$DISTRO_FAMILY")"
+
+    if [[ "$VERBOSE" -eq 1 ]]; then
+        log_info "Detected OS: $DISTRO_FAMILY ($DISTRO_ID $DISTRO_VERSION)"
+        log_info "Package manager: $PKG_MANAGER"
+    fi
+
+    # Write OS detection info
+    printf "OS Family: %s\nOS ID: %s\nOS Version: %s\nPackage Manager: %s\n" \
+        "$DISTRO_FAMILY" "$DISTRO_ID" "$DISTRO_VERSION" "$PKG_MANAGER" \
+        > "$RUN_DIR/detect.txt"
+
+    # Run modules sequentially
+    for module in "${MODULES[@]}"; do
+        run_module "$module" "$RUN_DIR"
+    done
+
+    # Generate summary report
+    report_generate_summary "$RUN_DIR" "$TIMESTAMP" "$DISTRO_FAMILY" "$DISTRO_ID" "$DISTRO_VERSION"
+
+    log_info "Audit complete. Reports in: $RUN_DIR"
+}
+
+# Run main function
+main "$@"

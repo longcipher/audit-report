@@ -80,23 +80,24 @@ ci: lint test-all
 
 # Run the application
 run *args:
-    @echo "Running bash-app..."
-    @bin/bash-app {{args}}
+    @echo "Running audit-report..."
+    @bin/audit-report {{args}}
 
 # Build for production
 build:
-    @echo "Building bash-app..."
-    @mkdir -p dist
-    @cp -r bin/ dist/
-    @cp -r lib/ dist/
-    @chmod +x dist/bin/bash-app
+    @echo "Building audit-report..."
+    @rm -rf dist
+    @mkdir -p dist/bin dist/lib/audit_report
+    @cp bin/audit-report dist/bin/
+    @cp lib/audit_report/*.sh dist/lib/audit_report/
+    @chmod +x dist/bin/audit-report
 
 # Install the application system-wide
 install-app:
-    @echo "Installing bash-app..."
-    @install -m755 bin/bash-app /usr/local/bin/bash-app
-    @install -d /usr/local/lib/bash-app
-    @install -m644 lib/bash_app/*.sh /usr/local/lib/bash-app/
+    @echo "Installing audit-report..."
+    @install -m755 bin/audit-report /usr/local/bin/audit-report
+    @install -d /usr/local/lib/audit-report
+    @install -m644 lib/audit_report/*.sh /usr/local/lib/audit-report/
 
 # ============================================================
 # Maintenance & Tools

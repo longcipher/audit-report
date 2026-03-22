@@ -1,223 +1,167 @@
-# Bash Template
+# audit-report
 
-A modern Bash shell script template with comprehensive tooling for package management, formatting, linting, and testing.
+A non-invasive Linux security auditing tool that auto-detects the OS distribution and runs multiple security scanners, consolidating all outputs into a timestamped directory.
 
 ## Features
 
-- **Package Management**: Basher integration
-- **Code Formatting**: shfmt with consistent style
-- **Linting**: ShellCheck for static analysis
-- **Testing**: Bats-core for unit testing
-- **Task Running**: Just for command management
+- **Auto-detection**: Automatically detects OS family (Debian/Ubuntu, RHEL/CentOS/Fedora/Rocky, Arch)
+- **Multiple scanners**: Runs Lynis, rkhunter, chkrootkit, and OpenSCAP
+- **Graceful degradation**: Skips missing tools with warnings (or fails on request)
+- **Timestamped output**: Creates `YYYYMMDD-HHMMSS` subdirectories for each run
+- **Summary report**: Generates a consolidated summary of all scan results
+- **Non-invasive**: Read-only system access; writes only to specified output directory
 
-## Quick Start
+## Supported Distributions
 
-### Prerequisites
+| Family | Distributions | Package Manager |
+|--------|--------------|-----------------|
+| Debian | Ubuntu, Debian, Linux Mint, Pop!_OS | apt |
+| RHEL | CentOS, RHEL, Rocky Linux, AlmaLinux, Fedora, Oracle Linux | dnf / yum |
+| Arch | Arch Linux, Manjaro, EndeavourOS | pacman |
 
-Install the required tools:
+## Requirements
+
+- Bash >= 4.0
+- Root privileges (for accessing privileged system files)
+
+### Optional Dependencies
+
+| Tool | Purpose | Install |
+|------|---------|---------|
+| [Lynis](https://cisofy.com/lynis/) | Security auditing | `apt install lynis` / `dnf install lynis` |
+| [rkhunter](http://rkhunter.sourceforge.net/) | Rootkit detection | `apt install rkhunter` / `dnf install rkhunter` |
+| [chkrootkit](http://www.chkrootkit.org/) | Rootkit detection | `apt install chkrootkit` / `dnf install chkrootkit` |
+| [OpenSCAP](https://www.open-scap.org/) | SCAP evaluation | `apt install libopenscap8` / `dnf install openscap-scanner` |
+| scap-security-guide | SCAP content | `apt install ssg-debian` / `dnf install scap-security-guide` |
+
+## Installation
 
 ```bash
-# Install shfmt (shell formatter)
-go install mvdan.cc/sh/v3/cmd/shfmt@latest
-
-# Install shellcheck (shell linter)
-brew install shellcheck
-
-# Install bats-core (testing framework)
-brew install bats-core
-
-# Install just (command runner)
-brew install just
-```
-
-### Installation
-
-```bash
-# Clone the template
 git clone <repository-url>
-cd bash-template
+cd audit-report
 
-# Install dependencies
-just install
-
-# Run the application
-just run hello "World"
-```
-
-### Package Management with Basher
-
-This template uses [basher](https://github.com/basherpm/basher) for package management:
-
-```bash
-# Install basher (if not already installed)
-git clone https://github.com/basherpm/basher.git ~/.basher
-~/.basher/bin/basher init
-
-# Install a package
-basher install <username>/<package>
-
-# List installed packages
-basher list
-```
-
-## Project Structure
-
-```
-bash-template/
-├── bin/                    # Executable scripts
-│   └── bash-app            # Main application entry point
-├── lib/                    # Library functions
-│   └── bash_app/
-│       ├── core.sh         # Core business logic
-│       └── utils.sh        # Utility functions
-├── tests/                  # Test files
-│   ├── core.bats           # Core function tests
-│   ├── utils.bats          # Utility function tests
-│   └── test_helper.bash    # Test helper functions
-├── scripts/                # Build and utility scripts
-├── .shellcheckrc           # ShellCheck configuration
-├── .editorconfig           # Editor configuration
-├── Justfile                # Task runner commands
-├── CLAUDE.md               # Claude AI instructions
-└── README.md               # Project documentation
+# Or install system-wide
+sudo just install-app
 ```
 
 ## Usage
 
-### Running the Application
+### Basic Usage
 
 ```bash
-# Show help
-./bin/bash-app --help
+# Run all available scanners
+sudo ./bin/audit-report --output /var/log/audits
 
-# Say hello
-./bin/bash-app hello
-./bin/bash-app hello "Alice"
+# Run specific modules only
+sudo ./bin/audit-report --output /tmp/reports --modules lynis,rkhunter
 
-# Process a file
-./bin/bash-app process myfile.txt
+# Verbose output
+sudo ./bin/audit-report --output /tmp/reports --verbose
 
-# Validate input
-./bin/bash-app validate "some input"
+# Fail if any tool is missing (instead of skipping)
+sudo ./bin/audit-report --output /tmp/reports --no-skip-missing
 ```
 
-### Development Commands
+### CLI Options
 
-```bash
-# Format code
-just format
+| Option | Description |
+|--------|-------------|
+| `-o, --output DIR` | Output directory for reports (required) |
+| `-m, --modules LIST` | Comma-separated list of modules to run |
+| `--skip-missing` | Skip modules whose tools are not installed (default) |
+| `--no-skip-missing` | Fail if a required tool is not installed |
+| `-v, --verbose` | Enable verbose output |
+| `-h, --help` | Show help message |
+| `--version` | Show version information |
 
-# Lint code
-just lint
+### Available Modules
 
-# Run tests
-just test
+- `lynis` — System security auditing
+- `rkhunter` — Rootkit detection
+- `chkrootkit` — Rootkit detection
+- `openscap` — SCAP evaluation with auto-detected profiles
 
-# Run all checks
-just check
+## Output Structure
 
-# Build for production
-just build
+```text
+<output-dir>/
+└── YYYYMMDD-HHMMSS/
+    ├── detect.txt              # OS detection results
+    ├── lynis-YYYYMMDD-HHMMSS.log
+    ├── lynis-YYYYMMDD-HHMMSS.dat
+    ├── rkhunter-YYYYMMDD-HHMMSS.log
+    ├── chkrootkit-YYYYMMDD-HHMMSS.txt
+    ├── oscap-results-YYYYMMDD-HHMMSS.xml
+    ├── oscap-report-YYYYMMDD-HHMMSS.html
+    └── summary-YYYYMMDD-HHMMSS.txt
 ```
 
-## Code Style
-
-### Shell Script Standards
-
-1. **Strict Mode**: Always use `set -euo pipefail`
-2. **ShellCheck Compliance**: All code must pass ShellCheck
-3. **Consistent Formatting**: 4-space indentation with shfmt
-4. **Error Handling**: Handle errors explicitly
-5. **Function Documentation**: Document all functions
-
-### Naming Conventions
-
-- **Files**: `lowercase-with-hyphens.sh`
-- **Functions**: `lowercase_with_underscores()`
-- **Constants**: `UPPERCASE_WITH_UNDERSCORES`
-- **Variables**: `lowercase_with_underscores`
-
-## Testing
+## Development
 
 ### Running Tests
 
 ```bash
 # Run all tests
-just test
+bats tests/
 
 # Run specific test file
-just test-file tests/core.bats
+bats tests/core.bats
 
-# Run with verbose output
-just test-verbose
+# Run all checks (format, lint, test)
+just check
 ```
 
-### Writing Tests
+### Project Structure
 
-```bash
-setup() {
-    load 'test_helper'
-    common_setup
-}
-
-@test "descriptive test name" {
-    run function_under_test "input"
-    [ "$status" -eq 0 ]
-    [ "$output" = "expected" ]
-}
+```text
+audit-report/
+├── bin/
+│   └── audit-report          # Main entry point
+├── lib/
+│   └── audit_report/
+│       ├── core.sh           # Logging, error handling, utilities
+│       ├── detect.sh         # OS detection functions
+│       ├── lynis.sh          # Lynis wrapper
+│       ├── rkhunter.sh       # rkhunter wrapper
+│       ├── chkrootkit.sh     # chkrootkit wrapper
+│       ├── openscap.sh       # OpenSCAP wrapper
+│       └── report.sh         # Summary report generation
+├── tests/
+│   ├── core.bats             # CLI and core function tests
+│   ├── detect.bats           # OS detection tests
+│   ├── lynis.bats            # Lynis module tests
+│   ├── rkhunter.bats         # rkhunter module tests
+│   ├── chkrootkit.bats       # chkrootkit module tests
+│   ├── openscap.bats         # OpenSCAP module tests
+│   ├── report.bats           # Report generation tests
+│   └── test_helper.bash      # Shared test utilities
+├── features/
+│   └── audit.feature         # BDD acceptance scenarios
+└── specs/                    # Design specifications
 ```
 
-## Configuration
+## Troubleshooting
 
-### ShellCheck (.shellcheckrc)
+**"must be run as root" error**
+The tool requires root privileges for accurate audit results. Run with `sudo`.
 
-```bash
-# Enable all checks
-enable=all
+**Module skipped unexpectedly**
+Use `--verbose` to see which tools are detected. Install missing tools or use `--modules` to select only available ones.
 
-# Disable specific checks
-disable=SC1091  # Not following non-constant source
-disable=SC2034  # Unused variables
-```
+**SCAP content not found**
+Install the `scap-security-guide` package for your distribution:
 
-### EditorConfig (.editorconfig)
-
-```ini
-[*.sh]
-indent_style = space
-indent_size = 4
-shell_variant = bash
-```
-
-## CI/CD Integration
-
-The template is designed for easy CI/CD integration:
-
-```yaml
-# Example GitHub Actions
-- name: Check code quality
-  run: just check
-
-- name: Run tests
-  run: just test
-```
+- Debian/Ubuntu: `apt install ssg-debian ssg-app`
+- RHEL/CentOS: `dnf install scap-security-guide`
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Make your changes
+3. Make your changes following the project conventions (`set -euo pipefail`, `[[ ]]`, `local`, `printf`)
 4. Run `just check` to verify
 5. Submit a pull request
 
 ## License
 
-MIT License - see LICENSE file for details.
-
-## Acknowledgments
-
-- [shfmt](https://github.com/mvdan/sh) - Shell formatter
-- [ShellCheck](https://github.com/koalaman/shellcheck) - Shell linter
-- [Bats-core](https://github.com/bats-core/bats-core) - Testing framework
-- [Just](https://github.com/casey/just) - Command runner
-- [Basher](https://github.com/basherpm/basher) - Package manager
+MIT License

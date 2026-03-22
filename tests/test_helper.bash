@@ -9,8 +9,7 @@ common_setup() {
     PROJECT_DIR="$(cd "$TEST_DIR/.." && pwd)"
 
     # Source library files
-    source "$PROJECT_DIR/lib/bash_app/core.sh"
-    source "$PROJECT_DIR/lib/bash_app/utils.sh"
+    source "$PROJECT_DIR/lib/audit_report/core.sh"
 
     # Create temporary directory for tests
     TEST_TMP_DIR="$(mktemp -d)"
@@ -22,9 +21,9 @@ common_setup() {
 # Setup test fixtures
 setup_fixtures() {
     # Create test files
-    echo "line 1" > "$TEST_TMP_DIR/test.txt"
-    echo "line 2" >> "$TEST_TMP_DIR/test.txt"
-    echo "line 3" >> "$TEST_TMP_DIR/test.txt"
+    printf "line 1\n" > "$TEST_TMP_DIR/test.txt"
+    printf "line 2\n" >> "$TEST_TMP_DIR/test.txt"
+    printf "line 3\n" >> "$TEST_TMP_DIR/test.txt"
 
     # Create empty file
     touch "$TEST_TMP_DIR/empty.txt"
@@ -46,10 +45,10 @@ assert_equal() {
 
     if [[ "$actual" != "$expected" ]]; then
         if [[ -n "$message" ]]; then
-            echo "FAIL: $message" >&2
+            printf "FAIL: %s\n" "$message" >&2
         fi
-        echo "Expected: $expected" >&2
-        echo "Actual:   $actual" >&2
+        printf "Expected: %s\n" "$expected" >&2
+        printf "Actual:   %s\n" "$actual" >&2
         return 1
     fi
 }
@@ -62,10 +61,10 @@ assert_contains() {
 
     if [[ "$haystack" != *"$needle"* ]]; then
         if [[ -n "$message" ]]; then
-            echo "FAIL: $message" >&2
+            printf "FAIL: %s\n" "$message" >&2
         fi
-        echo "Expected to contain: $needle" >&2
-        echo "Actual:              $haystack" >&2
+        printf "Expected to contain: %s\n" "$needle" >&2
+        printf "Actual:              %s\n" "$haystack" >&2
         return 1
     fi
 }
@@ -76,9 +75,9 @@ assert_success() {
     local message="${2:-Command failed}"
 
     if [[ "$status" -ne 0 ]]; then
-        echo "FAIL: $message" >&2
-        echo "Expected status: 0" >&2
-        echo "Actual status:   $status" >&2
+        printf "FAIL: %s\n" "$message" >&2
+        printf "Expected status: 0\n" >&2
+        printf "Actual status:   %s\n" "$status" >&2
         return 1
     fi
 }
@@ -89,9 +88,9 @@ assert_failure() {
     local message="${2:-Command succeeded unexpectedly}"
 
     if [[ "$status" -eq 0 ]]; then
-        echo "FAIL: $message" >&2
-        echo "Expected status: non-zero" >&2
-        echo "Actual status:   $status" >&2
+        printf "FAIL: %s\n" "$message" >&2
+        printf "Expected status: non-zero\n" >&2
+        printf "Actual status:   %s\n" "$status" >&2
         return 1
     fi
 }
