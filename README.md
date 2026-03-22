@@ -48,7 +48,7 @@ sudo just install-app
 
 ```bash
 # Install the audit-report skill for use with AI agents
-npx skills add @longcipher/audit-report
+npx skills add longcipher/audit-report
 ```
 
 ## Skill Usage
