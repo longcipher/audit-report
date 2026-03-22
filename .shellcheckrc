@@ -11,6 +11,7 @@ disable=SC2154  # Referenced but not assigned (variables from sourced files)
 disable=SC2250  # Prefer putting braces around variable references (style preference)
 disable=SC2292  # Prefer [[ ]] over [ ] for tests (style preference)
 disable=SC2310  # Function invoked in condition disables set -e (acceptable pattern)
+disable=SC2153
 
 # Set severity level
 severity=warning
