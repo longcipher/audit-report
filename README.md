@@ -21,7 +21,7 @@ A non-invasive Linux security auditing tool that auto-detects the OS distributio
 
 ## Requirements
 
-- Bash >= 4.0
+- Bash >= 5.0
 - Root privileges (for accessing privileged system files)
 
 ### Optional Dependencies
@@ -30,7 +30,7 @@ A non-invasive Linux security auditing tool that auto-detects the OS distributio
 |------|---------|---------|
 | [Lynis](https://cisofy.com/lynis/) | Security auditing | `apt install lynis` / `dnf install lynis` / `pacman -S lynis` |
 | [rkhunter](http://rkhunter.sourceforge.net/) | Rootkit detection | `apt install rkhunter` / `dnf install rkhunter` / `pacman -S rkhunter` |
-| [chkrootkit](http://www.chkrootkit.org/) | Rootkit detection | `apt install chkrootkit` / `dnf install chkrootkit` / `pacman -S chkrootkit` |
+| [chkrootkit](http://www.chkrootkit.org/) | Rootkit detection | `apt install chkrootkit` / `dnf install chkrootkit` / `paru -S chkrootkit` |
 | [OpenSCAP](https://www.open-scap.org/) | SCAP evaluation | `apt install libopenscap8` / `dnf install openscap-scanner` / `paru -S gconf openscap` |
 | scap-security-guide | SCAP content | `apt install ssg-debian` / `dnf install scap-security-guide` / `paru -S scap-security-guide` |
 
@@ -56,46 +56,7 @@ curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/inst
 curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | sudo bash -s -- --uninstall
 ```
 
-### Install with Basher
-
-If you use [basher](https://www.basher.it/) (the Bash package manager):
-
-```bash
-# Install basher first (if not already installed)
-curl -s https://raw.githubusercontent.com/basherpm/basher/master/install.sh | bash
-
-# Install audit-report
-basher install longcipher/audit-report
-```
-
-To upgrade:
-
-```bash
-basher upgrade longcipher/audit-report
-```
-
-To uninstall:
-
-```bash
-basher uninstall longcipher/audit-report
-```
-
 ### Manual Installation
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/longcipher/audit-report.git
-cd audit-report
-```
-
-2. Install the script:
-
-```bash
-just install-app
-```
-
-Or manually:
 
 ```bash
 sudo install -m755 bin/audit-report /usr/local/bin/audit-report
@@ -278,4 +239,4 @@ Install the `scap-security-guide` package for your distribution:
 
 ## License
 
-MIT License
+Apache-2.0 License

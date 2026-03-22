@@ -5,7 +5,7 @@
 **Project Name:** audit-report  
 **Version:** 0.1.0  
 **Language:** Bash (>= 4.0)  
-**License:** MIT
+**License:** Apache-2.0
 
 `audit-report` is a non-invasive Linux security auditing tool that automatically detects the host operating system distribution and generates comprehensive security audit reports. It leverages industry-standard tools (Lynis, rkhunter, chkrootkit, OpenSCAP) and consolidates all output into a single user-specified directory.
 

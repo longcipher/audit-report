@@ -29,7 +29,7 @@ author="longcipher"
 
 # License
 # SPDX license identifier
-license="MIT"
+license="Apache-2.0"
 
 # Bin files
 # These are the executables that will be linked to ~/.basher/bin
