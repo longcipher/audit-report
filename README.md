@@ -41,7 +41,7 @@ A non-invasive Linux security auditing tool that auto-detects the OS distributio
 The fastest way to install `audit-report`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | suo bash
+curl -fsSL https://raw.githubusercontent.com/longcipher/audit-report/master/install.sh | sudo bash
 ```
 
 **Custom installation prefix:**
