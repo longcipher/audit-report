@@ -55,11 +55,7 @@ test-file file:
     @echo "Running tests in {{file}}..."
     @bats {{file}}
 
-# Run BDD scenarios
-bdd:
-    @echo "BDD not configured yet. Add Gherkin features under features/"
-
-# Run both TDD and BDD suites
+# Run all test suites
 test-all:
     @bats tests/
 

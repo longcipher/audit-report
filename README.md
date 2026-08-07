@@ -210,8 +210,6 @@ audit-report/
 │   ├── openscap.bats         # OpenSCAP module tests
 │   ├── report.bats           # Report generation tests
 │   └── test_helper.bash      # Shared test utilities
-├── features/
-│   └── audit.feature         # BDD acceptance scenarios
 └── specs/                    # Design specifications
 ```
 

@@ -71,9 +71,6 @@ audit-report (bin/audit-report)
 │   ├── lynis.bats       # Tests for Lynis wrapper
 │   └── ...
 │
-├── features/
-│   └── audit.feature    # BDD acceptance scenarios
-│
 ├── justfile             # Task runner (format, lint, test, build)
 ├── .shellcheckrc        # ShellCheck configuration
 └── .editorconfig        # Editor formatting rules
@@ -342,36 +339,6 @@ Each run creates a timestamped subdirectory to preserve historical reports.
 - `tests/detect.bats` — Mock `/etc/os-release` content; verify family detection
 - `tests/lynis.bats` — Verify correct flags and output paths
 - `tests/openscap.bats` — Verify SCAP content path resolution per distro
-
-### BDD Scenarios
-
-```gherkin
-Feature: OS Detection
-  Scenario: Detect Ubuntu
-    Given /etc/os-release contains ID=ubuntu
-    When I run detect_os
-    Then the result should be "debian"
-
-  Scenario: Detect Arch Linux
-    Given /etc/os-release contains ID=arch
-    When I run detect_os
-    Then the result should be "arch"
-
-  Scenario: Detect Rocky Linux
-    Given /etc/os-release contains ID=rocky ID_LIKE="rhel centos fedora"
-    When I run detect_os
-    Then the result should be "rhel"
-
-  Scenario: Root privilege check
-    Given the current user is not root
-    When I run audit-report
-    Then it should exit with error "must be run as root"
-
-  Scenario: Sequential execution
-    Given all modules are enabled
-    When I run audit-report
-    Then modules should execute in order: lynis, rkhunter, chkrootkit, openscap
-```
 
 ---
 

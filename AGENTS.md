@@ -152,7 +152,6 @@ When fixing failures, identify root cause first, then apply idiomatic fixes inst
 Use outside-in development for behavior changes:
 
 - **Git Restrictions:** NEVER use `git worktree`. All code modifications MUST be made directly on the current branch in the existing working directory.
-- start with a failing Gherkin scenario under `features/`,
 - drive implementation with failing Bats tests,
 - keep example-based Bats tests as the default inner loop for named cases and edge cases,
 - add property-based tests under `tests/` when the rule is an invariant instead of a single named example,
@@ -171,8 +170,6 @@ If any command fails, report the failure and do not claim completion.
 
 ## Testing Requirements
 
-- BDD scenarios: place Gherkin features under `features/`.
-- Use BDD to define acceptance behavior first, then use Bats for the inner TDD loop.
 - Unit tests: place in `tests/` mirroring the source structure.
 - Keep example-based tests as the default; add property-based tests only for invariants.
 - Integration tests: place in `tests/integration/`.
