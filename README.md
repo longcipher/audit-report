@@ -5,7 +5,7 @@ A non-invasive Linux security auditing tool that auto-detects the OS distributio
 ## Features
 
 - **Auto-detection**: Automatically detects OS family (Debian/Ubuntu, RHEL/CentOS/Fedora/Rocky, Arch)
-- **Multiple scanners**: Runs Lynis, rkhunter, chkrootkit, and OpenSCAP
+- **Multiple scanners**: Runs Lynis, rkhunter, chkrootkit, OpenSCAP, and arch-audit
 - **Graceful degradation**: Skips missing tools with warnings (or fails on request)
 - **Timestamped output**: Creates `YYYYMMDD-HHMMSS` subdirectories for each run
 - **Summary report**: Generates a consolidated summary of all scan results
@@ -32,6 +32,7 @@ A non-invasive Linux security auditing tool that auto-detects the OS distributio
 | [rkhunter](http://rkhunter.sourceforge.net/) | Rootkit detection | `apt install rkhunter` / `dnf install rkhunter` / `pacman -S rkhunter` |
 | [chkrootkit](http://www.chkrootkit.org/) | Rootkit detection | `apt install chkrootkit` / `dnf install chkrootkit` / `paru -S chkrootkit` |
 | [OpenSCAP](https://www.open-scap.org/) | SCAP evaluation | `apt install libopenscap8` / `dnf install openscap-scanner` / `paru -S gconf openscap` |
+| [arch-audit](https://github.com/ilpianista/arch-audit) | CVE check for installed packages | Arch only: `pacman -S arch-audit` |
 | scap-security-guide | SCAP content | `apt install ssg-debian` / `dnf install scap-security-guide` / `paru -S scap-security-guide` |
 
 ## Installation
@@ -92,7 +93,7 @@ You can ask an AI agent to run security audits using phrases like:
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `output` | string | Yes | Output directory path for reports |
-| `modules` | string | No | Comma-separated list of modules to run (lynis,rkhunter,chkrootkit,openscap) |
+| `modules` | string | No | Comma-separated list of modules to run (lynis,rkhunter,chkrootkit,openscap,archaudit) |
 | `skip_missing` | boolean | No | Skip missing tools (default: true) |
 | `verbose` | boolean | No | Enable verbose output |
 
@@ -155,6 +156,7 @@ sudo audit-report --output /tmp/reports --no-skip-missing
 - `rkhunter` — Rootkit detection
 - `chkrootkit` — Rootkit detection
 - `openscap` — SCAP evaluation with auto-detected profiles
+- `archaudit` — CVE check for installed Arch packages (Arch only)
 
 ## Output Structure
 
@@ -168,6 +170,7 @@ sudo audit-report --output /tmp/reports --no-skip-missing
     ├── chkrootkit-YYYYMMDD-HHMMSS.txt
     ├── oscap-results-YYYYMMDD-HHMMSS.xml
     ├── oscap-report-YYYYMMDD-HHMMSS.html
+    ├── archaudit-YYYYMMDD-HHMMSS.txt
     └── summary-YYYYMMDD-HHMMSS.txt
 ```
 
@@ -200,6 +203,7 @@ audit-report/
 │       ├── rkhunter.sh       # rkhunter wrapper
 │       ├── chkrootkit.sh     # chkrootkit wrapper
 │       ├── openscap.sh       # OpenSCAP wrapper
+│       ├── archaudit.sh      # arch-audit wrapper
 │       └── report.sh         # Summary report generation
 ├── tests/
 │   ├── core.bats             # CLI and core function tests
@@ -208,6 +212,7 @@ audit-report/
 │   ├── rkhunter.bats         # rkhunter module tests
 │   ├── chkrootkit.bats       # chkrootkit module tests
 │   ├── openscap.bats         # OpenSCAP module tests
+│   ├── archaudit.bats        # arch-audit module tests
 │   ├── report.bats           # Report generation tests
 │   └── test_helper.bash      # Shared test utilities
 └── specs/                    # Design specifications

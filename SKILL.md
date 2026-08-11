@@ -38,7 +38,7 @@ The skill can be triggered with requests like:
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `output` | string | Yes | Output directory path for reports |
-| `modules` | string | No | Comma-separated list of modules to run (lynis,rkhunter,chkrootkit,openscap) |
+| `modules` | string | No | Comma-separated list of modules to run (lynis,rkhunter,chkrootkit,openscap,archaudit) |
 | `skip_missing` | boolean | No | Skip missing tools (default: true). Set to false to fail on missing tools |
 | `verbose` | boolean | No | Enable verbose output |
 

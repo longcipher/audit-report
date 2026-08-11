@@ -16,6 +16,7 @@ source "$LIB_DIR/audit-report/lynis.sh"
 source "$LIB_DIR/audit-report/rkhunter.sh"
 source "$LIB_DIR/audit-report/chkrootkit.sh"
 source "$LIB_DIR/audit-report/openscap.sh"
+source "$LIB_DIR/audit-report/archaudit.sh"
 source "$LIB_DIR/audit-report/report.sh"
 
 # Configuration variables
@@ -26,7 +27,7 @@ SKIP_MISSING=1
 VERBOSE=0
 
 # Default modules
-readonly ALL_MODULES=(lynis rkhunter chkrootkit openscap)
+readonly ALL_MODULES=(lynis rkhunter chkrootkit openscap archaudit)
 MODULES=()
 
 # Module status tracking
@@ -50,7 +51,7 @@ audit-report — Linux Security Audit Tool
 Options:
     -o, --output DIR          Output directory for reports (required)
     -m, --modules LIST        Comma-separated list of modules to run
-                              Available: lynis, rkhunter, chkrootkit, openscap
+                              Available: lynis, rkhunter, chkrootkit, openscap, archaudit
                               Default: all modules
     --skip-missing            Skip modules whose tools are not installed (default)
     --no-skip-missing         Fail if a required tool is not installed

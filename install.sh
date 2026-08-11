@@ -89,7 +89,7 @@ install_audit_report() {
 
     # Download library files
     log_info "Downloading library files..."
-    local lib_files=("core.sh" "detect.sh" "lynis.sh" "rkhunter.sh" "chkrootkit.sh" "openscap.sh" "report.sh")
+    local lib_files=("core.sh" "detect.sh" "lynis.sh" "rkhunter.sh" "chkrootkit.sh" "openscap.sh" "archaudit.sh" "report.sh")
 
     for lib in "${lib_files[@]}"; do
         local temp_lib

@@ -38,7 +38,7 @@ report_generate_summary() {
         printf "  %-15s %-10s %s\n" "------" "------" "------"
 
         # Read module status from detect.txt and output files
-        local modules=(lynis rkhunter chkrootkit openscap)
+        local modules=(lynis rkhunter chkrootkit openscap archaudit)
         for module in "${modules[@]}"; do
             local status
             status="not-checked"
@@ -57,6 +57,9 @@ report_generate_summary() {
                     ;;
                 openscap)
                     output_files="$(find "$output_dir" -name "oscap-*" 2> /dev/null | tr '\n' ', ')"
+                    ;;
+                archaudit)
+                    output_files="$(find "$output_dir" -name "archaudit-*.txt" 2> /dev/null | tr '\n' ', ')"
                     ;;
                 *) ;; # unknown module, no output files
             esac
